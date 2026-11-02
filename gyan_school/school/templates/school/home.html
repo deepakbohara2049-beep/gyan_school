@@ -1,0 +1,260 @@
+
+{% extends 'school/base.html' %}
+
+{% block title %}Home | Gyan School{% endblock %}
+
+{% block content %}
+
+<!-- Banner -->
+<section id="home" class="hero">
+    <div class="container">
+
+        {% if banners %}
+        <div id="schoolCarousel" class="carousel slide"
+             data-bs-ride="carousel">
+
+            <div class="carousel-inner">
+                {% for banner in banners %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <div class="row align-items-center g-4">
+
+                        <div class="col-md-6 py-4">
+                            <h1 class="display-5 fw-bold">
+                                {{ banner.title }}
+                            </h1>
+
+                            {% if banner.subtitle %}
+                            <h4 class="text-primary">
+                                {{ banner.subtitle }}
+                            </h4>
+                            {% endif %}
+
+                            <p>{{ banner.description }}</p>
+
+                            {% if banner.button_link %}
+                            <a href="{{ banner.button_link }}"
+                               class="btn btn-primary btn-lg">
+                                {{ banner.button_text|default:"Learn More" }}
+                            </a>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6">
+                            {% if banner.image %}
+                            <img src="{{ banner.image.url }}"
+                                 alt="{{ banner.title }}"
+                                 class="img-fluid rounded shadow">
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if banners.count > 1 %}
+            <button class="carousel-control-prev" type="button"
+                    data-bs-target="#schoolCarousel"
+                    data-bs-slide="prev">
+                <span class="carousel-control-prev-icon bg-dark rounded"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+
+            <button class="carousel-control-next" type="button"
+                    data-bs-target="#schoolCarousel"
+                    data-bs-slide="next">
+                <span class="carousel-control-next-icon bg-dark rounded"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            {% endif %}
+
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <h1 class="display-4 fw-bold">Welcome to Gyan School</h1>
+            <p class="lead">Learn, Grow and Achieve Your Dreams.</p>
+            <a href="#about" class="btn btn-primary btn-lg">
+                Discover Our School
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+<!-- Messages -->
+<div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show"
+         role="alert">
+        {{ message }}
+        <button type="button" class="btn-close"
+                data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- About -->
+<section id="about" class="section-padding">
+    <div class="container">
+        <div class="row align-items-center g-4">
+
+            {% if school_info %}
+
+            <div class="col-md-6">
+                {% if school_info.image %}
+                <img src="{{ school_info.image.url }}"
+                     alt="{{ school_info.title }}"
+                     class="img-fluid rounded shadow">
+                {% endif %}
+            </div>
+
+            <div class="col-md-6">
+                <h2 class="fw-bold">{{ school_info.title }}</h2>
+                <p>{{ school_info.description|linebreaksbr }}</p>
+                <p><strong>Address:</strong> {{ school_info.address }}</p>
+                <p><strong>Phone:</strong> {{ school_info.phone }}</p>
+                <p><strong>Email:</strong> {{ school_info.email }}</p>
+            </div>
+
+            {% else %}
+            <div class="col-12 text-center">
+                <h2>About Gyan School</h2>
+                <p>Add your school information through the admin panel.</p>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+
+<!-- Classes -->
+<section id="classes" class="section-padding bg-light">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Our Classes</h2>
+            <p>Explore our educational programs.</p>
+        </div>
+
+        <div class="row g-4">
+            {% for school_class in classes %}
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+
+                    {% if school_class.image %}
+                    <img src="{{ school_class.image.url }}"
+                         class="card-img-top"
+                         alt="{{ school_class.name }}">
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ school_class.name }}</h5>
+                        <p class="card-text">{{ school_class.description }}</p>
+                    </div>
+
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p>No classes have been added yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+<!-- Facilities -->
+<section id="facilities" class="section-padding">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Our Facilities</h2>
+            <p>Facilities that support learning and development.</p>
+        </div>
+
+        <div class="row g-4">
+            {% for facility in facilities %}
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4 shadow-sm">
+
+                    <div class="facility-icon mb-3">
+                        <i class="{{ facility.icon }}" aria-hidden="true"></i>
+                    </div>
+
+                    <h5>{{ facility.name }}</h5>
+                    <p>{{ facility.description }}</p>
+
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p>No facilities have been added yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="section-padding bg-light">
+    <div class="container">
+
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">Contact Us</h2>
+            <p>Send us your enquiry.</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+
+                <form method="post" class="card p-4 shadow-sm">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control"
+                               id="name" name="name"
+                               maxlength="100" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control"
+                               id="email" name="email" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control"
+                               id="phone" name="phone" maxlength="30">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" class="form-control"
+                               id="subject" name="subject"
+                               maxlength="100" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message"
+                                  name="message" rows="5"
+                                  required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Submit Enquiry
+                    </button>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
